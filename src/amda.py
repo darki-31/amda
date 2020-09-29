@@ -51,17 +51,21 @@ class ActivityMonitorDataAnalyzer:
         for file in os.listdir(folder):
             if file.endswith(".csv"):
                 sp1 = file.split('_')
-                if len(sp1) == 3 and int(sp1[1]) == self.time_frame_ms:
-                    sp2 = sp1[2].split('.')
-                    if sp2[0] == "pos":
-                        path = os.path.join(folder, file)
-                        self.pos_files.append(path)
-                    elif sp2[0] == "prefs":
-                        path = os.path.join(folder, file)
-                        self.pref_files.append(path)
-                    elif sp2[0] == "dist":
-                        path = os.path.join(folder, file)
-                        self.distance_files.append(path)
+                try:
+                    if len(sp1) == 3 and int(sp1[1]) == self.time_frame_ms:
+                        sp2 = sp1[2].split('.')
+                        if sp2[0] == "pos":
+                            path = os.path.join(folder, file)
+                            self.pos_files.append(path)
+                        elif sp2[0] == "prefs":
+                            path = os.path.join(folder, file)
+                            self.pref_files.append(path)
+                        elif sp2[0] == "dist":
+                            path = os.path.join(folder, file)
+                            self.distance_files.append(path)
+                except ValueError:
+                    pass
+                
 
     
     def plot_roaming_entropie(self, period="1H", fig_size=(23,6)):
