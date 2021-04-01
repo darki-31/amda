@@ -16,13 +16,15 @@ from roaming_entropie import roaming_entropie
 
 class ActivityMonitorDataAnalyzer:
     time_frame_ms = 500
+    min_pos_dist = 0
     pos_files = []
     reader_pos = {}
     pref_files = []
     distance_files = []
     
-    def __init__(self, time_frame_ms):
+    def __init__(self, time_frame_ms, min_pos_dist):
         self.time_frame_ms = time_frame_ms
+        self.min_pos_dist = min_pos_dist
     
     def calculate(self, file):
         self.pos_files = []
@@ -30,7 +32,7 @@ class ActivityMonitorDataAnalyzer:
         self.pref_files = []
         self.distance_files = []
 
-        res = calc_mean_pos(file, self.time_frame_ms)
+        res = calc_mean_pos(file, self.time_frame_ms, self.min_pos_dist)
         self.reader_pos = res[1]
         self.pos_files = res[0]
 
@@ -296,4 +298,25 @@ class ActivityMonitorDataAnalyzer:
         #plt.legend(ncol=2, loc='upper right')
         plt.legend(bbox_to_anchor=(1.01, 1), loc='upper left', ncol=1)
         #plt.xticks(rotation=90)
+        plt.show()
+
+    def plot_accumulated_distance(self, fig_size=(23, 6)):
+        files = []
+        for file in self.distance_files:
+            files.append((os.path.basename(file).split('_')[0], file))
+
+        plt.figure(figsize=(24, 12))
+        for file in files:
+            df = pd.read_csv(file[1], index_col=0, parse_dates=True)
+            df.assign(sum=df.distance.cumsum())
+            df[file[0]] = df.distance.cumsum()
+            plt.plot(df.index, df[file[0]], label=file[0])
+
+        sns.set()
+        sns.set_context("notebook", font_scale=1.5,
+                        rc={"lines.linewidth": 1.5})
+
+        plt.grid(True)
+        plt.margins(0.01)
+        plt.legend(bbox_to_anchor=(1.01, 1), loc='upper left', ncol=1)
         plt.show()
