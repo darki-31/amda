@@ -18,7 +18,7 @@ def addStayTimeToSpacePrefs(space_prefs, time, pos, stay_time):
     add_time = time.replace(microsecond=0)
     space_prefs[pos][add_time] += stay_time
 
-def calc_pref_from_pos(file, space_pos):
+def calc_pref_from_pos(file, space_pos, min_pos_dist=0):
     df = pd.read_csv(file)
     df["DateTime"] = df["DateTime"].astype('datetime64[ns]')
 
@@ -28,11 +28,17 @@ def calc_pref_from_pos(file, space_pos):
     cur_pos = None
     cur_time = df["DateTime"][0]
     cur_time_s = cur_time.replace(microsecond=0)
+    cur_p = None
 
     for row in tqdm(df.iterrows(), leave=True):
-        #ev_time = row[1]["DateTime"].replace(microsecond=0)
-        
         p = np.array((row[1]["x_pos"], row[1]["y_pos"], row[1]["z_pos"]))
+        
+        if cur_p is not None:
+            cur_dist = np.linalg.norm(p - cur_p)
+            if cur_dist < min_pos_dist:
+                continue
+
+        cur_p = p
         min_dist = 1000
         pos = ""
         for sp in space_pos:
@@ -77,3 +83,4 @@ def calc_pref_from_pos(file, space_pos):
     df1.to_csv(new_file_name)
 
     return new_file_name
+

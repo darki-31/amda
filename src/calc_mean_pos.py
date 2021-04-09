@@ -18,7 +18,7 @@ def addPoint(animal, reader, time, pos, all_data):
     all_data[animal].append({"DateTime": time, "Reader": reader, "x_pos": pos[0], "y_pos": pos[1], "z_pos": pos[2]})
 
 
-def calc_mean_pos(file, timeFrameMs=500, min_pos_dist=0):
+def calc_mean_pos(file, timeFrameMs = 500):
     folder = os.path.dirname(file)
     reader_all = []
     reader_pos = {}
@@ -60,7 +60,6 @@ def calc_mean_pos(file, timeFrameMs=500, min_pos_dist=0):
     csv_file.close()
 
     pos_file_names = []
-    last_pos = np.array([])
     for animal in tqdm(data, desc='calculate mean positions', leave=True):
         pos_dic = []
 
@@ -85,19 +84,8 @@ def calc_mean_pos(file, timeFrameMs=500, min_pos_dist=0):
                 x_pos /= len(positions)
                 y_pos /= len(positions)
                 z_pos /= len(positions)
-                if min_pos_dist == 0 or last_pos.size == 0:
-                    last_pos = np.array([x_pos, y_pos, z_pos])
-                    pos_dic.append((positions[0][0], x_pos, y_pos, z_pos, len(positions)))
-                else:
-                    p = np.array([x_pos, y_pos, z_pos])
-                    cur_dist = np.linalg.norm(p - last_pos)
-                    if cur_dist > min_pos_dist:
-                        pos_dic.append((positions[0][0], x_pos, y_pos, z_pos, len(positions)))
-                        last_pos = p
-                    else:
-                        pos_dic.append(
-                            (positions[0][0], last_pos[0], last_pos[1], last_pos[2], len(positions)))
-                
+                pos_dic.append((positions[0][0], x_pos, y_pos, z_pos, len(positions)))
+                #print(f"{positions[0][0]} {x_pos} {y_pos} {z_pos} {len(positions)}")
 
             to_remove = 0
             for pos in positions:

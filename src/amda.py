@@ -32,16 +32,16 @@ class ActivityMonitorDataAnalyzer:
         self.pref_files = []
         self.distance_files = []
 
-        res = calc_mean_pos(file, self.time_frame_ms, self.min_pos_dist)
+        res = calc_mean_pos(file, self.time_frame_ms)
         self.reader_pos = res[1]
         self.pos_files = res[0]
 
         for file in tqdm(self.pos_files, desc='calculate spatial preferences', leave=True):
-            pf = calc_pref_from_pos(file, self.reader_pos)
+            pf = calc_pref_from_pos(file, self.reader_pos, self.min_pos_dist)
             self.pref_files.append(pf)
         
         for file in tqdm(self.pos_files, desc='calculate distance traveled', leave=True):
-            pf = calc_distance(file)
+            pf = calc_distance(file, self.min_pos_dist)
             self.distance_files.append(pf)
 
     def scan_folder(self, folder):
