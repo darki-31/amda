@@ -11,9 +11,7 @@ Now download the repository to your PC. You can use "git clone" or the above "Co
 1. Create the virtual environment with the command "py -m venv venv". The last parameter is the folder name from the previous step.
 1. Now we have to activate the virtual environment. If you are using "cmd", type: "venv\Scripts\activate.bat". With "powershell" type: ".\venv\Scripts\Activate.ps1".
 1. Install all packages with "pip install -r requirements.txt".
-1. We need to install an extension for jupyter-lab: "jupyter labextension install @jupyter-widgets/jupyterlab-manager".
-1. To activate this extension: "jupyter nbextension enable --py widgetsnbextension",
-1. Now we can start JupyterLab: just type "jupyter-lab".
+1. Now we can use JupyterLab: just type "jupyter-lab" or VS Code.
 1. JupyterLab will now atomatically open a new web browser window.
 1. Now you can open the "source/plot.ipynb" file inside of JupyterLab and analyze your data.
 
@@ -22,7 +20,7 @@ Now download the repository to your PC. You can use "git clone" or the above "Co
 
 AMDA has some restrictions for the csv files.
 
-1. All animals has to have valid names. Animal with "unknown" tag will irgnored.
+1. All animals has to have valid names. Animals with "unknown" tag will irgnored.
 1. All readers has to have a valid position in the csv metadata.
 1. AMDA can analyze and plot the data from only one AM.
 
