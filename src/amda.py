@@ -83,7 +83,7 @@ class ActivityMonitorDataAnalyzer:
             res[file[0]] = res.apply(lambda row: roaming_entropie(row), axis=1, raw=True)
 
             if result is None:
-                result = res[file[0]]
+                result = res
             else:
                 result = pd.concat([result, res[file[0]]], axis=1, join="outer")
         
@@ -116,7 +116,7 @@ class ActivityMonitorDataAnalyzer:
             res[file[0]] = res.apply(lambda row: roaming_entropie(row), axis=1, raw=True)
 
             if result is None:
-                result = res[file[0]]
+                result = res
             else:
                 result = pd.concat([result, res[file[0]]], axis=1, join="outer")
         
@@ -199,7 +199,7 @@ class ActivityMonitorDataAnalyzer:
             res.index.name = "DateTime"
 
             if result is None:
-                result = res[file[0]]
+                result = res
             else:
                 result = pd.concat([result, res[file[0]]], axis=1, join="outer")
         
@@ -231,7 +231,7 @@ class ActivityMonitorDataAnalyzer:
             res.index.name = "DateTime"
 
             if result is None:
-                result = res[file[0]]
+                result = res
             else:
                 result = pd.concat([result, res[file[0]]], axis=1, join="outer")
         
@@ -305,6 +305,9 @@ class ActivityMonitorDataAnalyzer:
         for file in self.distance_files:
             files.append((os.path.basename(file).split('_')[0], file))
 
+        sns.set()
+        sns.set_context("notebook", font_scale=1.5, rc={"lines.linewidth": 1.5})
+        
         plt.figure(figsize=(24, 12))
         for file in files:
             df = pd.read_csv(file[1], index_col=0, parse_dates=True)
@@ -312,11 +315,7 @@ class ActivityMonitorDataAnalyzer:
             df[file[0]] = df.distance.cumsum()
             plt.plot(df.index, df[file[0]], label=file[0])
 
-        sns.set()
-        sns.set_context("notebook", font_scale=1.5,
-                        rc={"lines.linewidth": 1.5})
-
         plt.grid(True)
         plt.margins(0.01)
-        plt.legend(bbox_to_anchor=(1.01, 1), loc='upper left', ncol=1)
+        plt.legend(loc='upper left')
         plt.show()
