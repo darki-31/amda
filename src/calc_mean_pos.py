@@ -44,8 +44,10 @@ def calc_mean_pos(file, timeFrameMs = 500):
                     start_ev_time = ole2datetime(vals[0])
                     times = vals[11].split(',')
                     if len(times) > 1 and len(times) == int(vals[7]):
+                        offset = 0
                         for t in times:
-                            ev_time = start_ev_time + datetime.timedelta(milliseconds=int(t))
+                            offset += int(t)
+                            ev_time = start_ev_time + datetime.timedelta(milliseconds=offset)
                             addPoint(vals[2], vals[3], ev_time, reader_pos[vals[3]], data)
                     else:
                         events = int(vals[7]) - 1

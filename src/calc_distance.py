@@ -49,6 +49,8 @@ def calc_distance(file, min_pos_dist=0):
             cur_time = row[1]["DateTime"]
             cur_time_s = cur_time.replace(microsecond=0)
 
+            cur_pos = p
+
     ev_time = ev_time.replace(microsecond=0)
     while cur_time_s < ev_time:
         distances.append((cur_time_s, 0))
@@ -67,4 +69,3 @@ def calc_distance(file, min_pos_dist=0):
     df.to_csv(new_file_name)
 
     return new_file_name
-
